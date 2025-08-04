@@ -1,26 +1,31 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.fade-up {
+  animation: fadeUp 0.6s ease-out both;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0px rgba(0, 217, 255, 0), 0 0 0px rgba(0, 255, 138, 0), 0 0 0px rgba(255, 255, 0, 0);
+  }
+  50% {
+    box-shadow:
+      0 0 12px rgba(59,130,246,0.5),   /* Azul */
+      0 0 24px rgba(34,197,94,0.4),    /* Verde */
+      0 0 36px rgba(234,179,8,0.3);    /* Amarillo */
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.aurora-loop {
+  animation: pulseGlow 4.5s ease-in-out infinite;
 }

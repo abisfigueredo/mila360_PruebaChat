@@ -11,7 +11,7 @@ const Landing = () => {
   const loginHandler = async () => {
     const provider = new GoogleAuthProvider();
     await signInWithPopup(auth, provider);
-    router.push("/bootloader"); // te lleva al home si se autentica
+    router.push("/"); // te lleva al home si se autentica
   };
 
   return (
