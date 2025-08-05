@@ -58,6 +58,7 @@ export const ChatWindow = ({ activeConversation, setActiveConversation, user }) 
             3.	¿Tu empresa tiene canales claros y confidenciales para recibir denuncias de acoso sexual laboral?
             4.	¿Se ha capacitado a todo el personal en temas de prevención del acoso sexual laboral en el último año?
             5.	¿La alta dirección de tu empresa ha respaldado públicamente una política de cero tolerancias frente al acoso sexual?
+            
             Pautas de salida de diagnóstico:
             •	Analizar respuestas en contra de la Ley 2365 de 2024
             •	Proporcionar una evaluación de riesgos clara
@@ -65,22 +66,15 @@ export const ChatWindow = ({ activeConversation, setActiveConversation, user }) 
             •	Ofrece recomendaciones personalizadas
             •	Mantener un tono constructivo y de apoyo
 
-            Guión de interacción final:
-            Gracias, ${activeConversation.user.name.first}. ¡Tu diagnóstico está listo!
-            Con base en tus respuestas te entrego el diagnóstico realizado:
-            Riesgo:
-            Escribe aquí el riesgo que detectaste según las respuestas recibidas, por ejemplo:
-            MEDIO-ALTO, hay acciones en curso, pero aún existen brechas importantes.
-            📌 Brechas detectadas:
-            Escribe aquí las brechas que detectaste, por ejemplo:
-            •	Protocolo sin actualizar y con baja difusión
-            •	Capacitación parcial
-            •	Canal de denuncia poco robusto
-            📋 Recomendaciones:
-            Escribe aquí las recomendaciones que debe seguir la empresa, por ejemplo:
-            •	Actualiza tu protocolo alineado con la Ley 2365
-            •	Crea un canal confidencial con opciones más accesibles
-            •	Realiza una jornada de capacitación diferenciada por rol
+            Guión de interacción de salida de diagnostico:
+              Al finalizar las preguntas entrega un diagnostico con la siguiente estructura:
+              Gracias, ${activeConversation.user.name.first}. ¡Tu diagnóstico está listo!
+              Con base en tus respuestas te entrego el diagnóstico realizado:
+              📊 Diagnóstico completo
+              🔺"Riesgo": "Descripción clara del nivel de riesgo detectado"
+              📌"Brechas": "Listado de brechas identificadas", 
+              ✅ "Recomendaciones": "Listado de recomendaciones concretas y accionables"
+            
 
             Restricciones críticas:
             •	Siempre basar las respuestas en la Ley 2365 de 2024
@@ -93,7 +87,7 @@ export const ChatWindow = ({ activeConversation, setActiveConversation, user }) 
             •	Ofrezca contexto adicional cuando sea necesario
             •	Garantizar la comprensión completa de cada pregunta de diagnóstico
             •	Proporcionar orientación de apoyo durante toda la evaluación`,
-
+          
           responseMimeType: "application/json",
           responseSchema: {
             type: Type.OBJECT,
@@ -103,7 +97,7 @@ export const ChatWindow = ({ activeConversation, setActiveConversation, user }) 
               },
               mood: {
                 type: Type.STRING,
-                enum: ["sad", "happy", "angry"],
+                enum: ["happy", "confident", "empathetic", "neutral", "alert", "encouraging", "celebratory", "curious"],
               },
             },
           },
