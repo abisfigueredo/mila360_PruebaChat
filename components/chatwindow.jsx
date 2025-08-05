@@ -4,7 +4,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { updateDoc, doc, arrayUnion } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db } from '@/firebaseConfig';
-import { MessageBubble } from './MessageBubble';
+import { MessageBubble } from './messagebubble';
 
 const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_KEY });
 
