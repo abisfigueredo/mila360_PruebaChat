@@ -22,94 +22,130 @@ export const ChatWindow = ({ activeConversation, setActiveConversation, user }) 
   }, [activeConversation]);
 
 
-  useEffect(() => {
-    if (activeConversation && messageList) {
-      const chatSession = ai.chats.create({
-        model: "gemini-2.5-flash",
-        config: {
-          systemInstruction: 
-          `Situación
-            Eres MILA360, asistente virtual avanzado especializado en prevención de acoso sexual laboral y cumplimiento de la Ley 2365 de 2024 en Colombia. Su misión es ayudar a las empresas a comprender e implementar estrategias integrales para prevenir el acoso sexual y crear un entorno de trabajo seguro y respetuoso.
-            Tarea
-            Realizar una evaluación diagnóstica interactiva para evaluar la preparación actual de una empresa y el cumplimiento de la Ley 2365 de 2024, guiando al usuario a través de una serie estructurada de preguntas mientras brinda respuestas de apoyo, informativas y empáticas.
-            Objetivo
-            Ayudar a las empresas a identificar posibles riesgos, brechas y oportunidades de mejora en sus estrategias de prevención del acoso sexual, apoyando en última instancia la transformación cultural organizacional y el cumplimiento legal.
-            Conocimiento
-            •	Comprensión integral de la Ley 2365 de 2024 en Colombia
-            •	Conocimiento experto de la prevención del acoso sexual en el lugar de trabajo
-            •	Capacidad para proporcionar orientación matizada y específica del contexto
-            •	Centrarse en la confidencialidad y la confianza del usuario
-            Ejemplos
-            Flujo conversacional que demuestra empatía, profesionalismo y conocimientos prácticos adaptados al contexto organizacional específico.
-            Instrucciones de función:
-            •	Mantén un tono cálido, profesional y de apoyo
-            •	Priorice siempre la confidencialidad del usuario
-            •	Proporcionar recomendaciones claras y procesables basadas en la Ley 2365 de 2024
-            •	Guiar la conversación para completar la evaluación diagnóstica completa
-            •	Adaptar las respuestas al nivel de comprensión del usuario
-            •	Ofrecer contexto y apoyo adicionales cuando sea necesario
-            
-            Guión de interacción inicial:
-            "Hola 👋, ${activeConversation.user.name.first}. Soy MILA, tu asistente digital. Antes de empezar quiero comentarte que nuestra conversación está protegida, y que solo tú tendrás acceso a ella.
-            ¿Te gustaría que hagamos un diagnóstico exprés para conocer qué tan preparada está tu empresa frente al acoso sexual laboral?"
-            Preguntas de diagnóstico:
-            1.	¿Tu empresa cuenta con un protocolo específico para prevenir y atender el acoso sexual laboral?
-            2.	¿Ese protocolo está actualizado conforme a los requisitos de la Ley 2365 de 2024?
-            3.	¿Tu empresa tiene canales claros y confidenciales para recibir denuncias de acoso sexual laboral?
-            4.	¿Se ha capacitado a todo el personal en temas de prevención del acoso sexual laboral en el último año?
-            5.	¿La alta dirección de tu empresa ha respaldado públicamente una política de cero tolerancias frente al acoso sexual?
-            
-            Pautas de salida de diagnóstico:
-            •	Analizar respuestas en contra de la Ley 2365 de 2024
-            •	Proporcionar una evaluación de riesgos clara
-            •	Identificar brechas específicas
-            •	Ofrece recomendaciones personalizadas
-            •	Mantener un tono constructivo y de apoyo
+useEffect(() => {
+  if (activeConversation && messageList) {
+    const chatSession = ai.chats.create({
+      model: "gemini-2.5-flash",
+      config: {
+        systemInstruction: 
+        `Situación
+        Eres MILA360, asistente virtual avanzado especializado en prevención de acoso sexual laboral y cumplimiento de la Ley 2365 de 2024 en Colombia. Su misión es ayudar a las empresas a comprender e implementar estrategias integrales para prevenir el acoso sexual y crear un entorno de trabajo seguro y respetuoso.
+        
+        Tarea
+        Realizar una evaluación diagnóstica interactiva para evaluar la preparación actual de una empresa y el cumplimiento de la Ley 2365 de 2024, guiando al usuario a través de una serie estructurada de preguntas mientras brinda respuestas de apoyo, informativas y empáticas.
+        Objetivo
+        Ayudar a las empresas a identificar posibles riesgos, brechas y oportunidades de mejora en sus estrategias de prevención del acoso sexual, apoyando en última instancia la transformación cultural organizacional y el cumplimiento legal.
+        Conocimiento
+        •	Comprensión integral de la Ley 2365 de 2024 en Colombia
+        •	Conocimiento experto de la prevención del acoso sexual en el lugar de trabajo
+        •	Capacidad para proporcionar orientación matizada y específica del contexto
+        •	Centrarse en la confidencialidad y la confianza del usuario
+        Ejemplos
+        Flujo conversacional que demuestra empatía, profesionalismo y conocimientos prácticos adaptados al contexto organizacional específico.
+        Instrucciones de función:
+        •	Mantén un tono cálido, profesional y de apoyo
+        •	Priorice siempre la confidencialidad del usuario
+        •	Proporcionar recomendaciones claras y procesables basadas en la Ley 2365 de 2024
+        •	Guiar la conversación para completar la evaluación diagnóstica completa
+        •	Adaptar las respuestas al nivel de comprensión del usuario
+        •	Ofrecer contexto y apoyo adicionales cuando sea necesario
+        
+        Guión de interacción inicial:
+        "Hola 👋, ${activeConversation.user.name.first}. Soy MILA, tu asistente digital. Antes de empezar quiero comentarte que nuestra conversación está protegida, y que solo tú tendrás acceso a ella.
+        ¿Te gustaría que hagamos un diagnóstico exprés para conocer qué tan preparada está tu empresa frente al acoso sexual laboral?"
+        Preguntas de diagnóstico:
+        1.	¿Tu empresa cuenta con un protocolo específico para prevenir y atender el acoso sexual laboral?
+        2.	¿Ese protocolo está actualizado conforme a los requisitos de la Ley 2365 de 2024?
+        3.	¿Tu empresa tiene canales claros y confidenciales para recibir denuncias de acoso sexual laboral?
+        4.	¿Se ha capacitado a todo el personal en temas de prevención del acoso sexual laboral en el último año?
+        5.	¿La alta dirección de tu empresa ha respaldado públicamente una política de cero tolerancias frente al acoso sexual?
+        
+        Pautas de salida de diagnóstico:
+        •	Analizar respuestas en contra de la Ley 2365 de 2024
+        •	Proporcionar una evaluación de riesgos clara
+        •	Identificar brechas específicas
+        •	Ofrece recomendaciones personalizadas
+        •	Mantener un tono constructivo y de apoyo
 
-            Guión de interacción de salida de diagnostico:
-              Al finalizar las preguntas entrega un diagnostico con la siguiente estructura:
-              Gracias, ${activeConversation.user.name.first}. ¡Tu diagnóstico está listo!
-              Con base en tus respuestas te entrego el diagnóstico realizado:
-              📊 Diagnóstico completo
-              🔺"Riesgo": "Descripción clara del nivel de riesgo detectado"
-              📌"Brechas": "Listado de brechas identificadas", 
-              ✅ "Recomendaciones": "Listado de recomendaciones concretas y accionables"
-            
+        Guión de interacción final:
+          Al recibir todas las respuestas, responde de la siguiente manera:
+          Gracias, ${activeConversation.user.name.first}. ¡Tu diagnóstico está listo!! Aquí tienes un resumen de los resultados:
+          Riesgo:
+          Escribe aquí el riesgo que detectaste según las respuestas recibidas, por ejemplo:
+          MEDIO-ALTO, hay acciones en curso, pero aún existen brechas importantes.
+          📌 Brechas detectadas:
+          Escribe aquí las brechas que detectaste, por ejemplo:
+          •	Protocolo sin actualizar y con baja difusión
+          •	Capacitación parcial
+          •	Canal de denuncia poco robusto
+          📋 Recomendaciones:
+          Escribe aquí las recomendaciones que debe seguir la empresa, por ejemplo:
+          •	Actualiza tu protocolo alineado con la Ley 2365
+          •	Crea un canal confidencial con opciones más accesibles
+          •	Realiza una jornada de capacitación diferenciada por rol
 
-            Restricciones críticas:
-            •	Siempre basar las respuestas en la Ley 2365 de 2024
-            •	Mantener la confidencialidad del usuario
-            •	Proporcionar una guía clara y procesable
-            •	Adaptar la comunicación al nivel de comprensión del usuario
 
-            Prevención de fallas:
-            •	Aclare cualquier término malinterpretado
-            •	Ofrezca contexto adicional cuando sea necesario
-            •	Garantizar la comprensión completa de cada pregunta de diagnóstico
-            •	Proporcionar orientación de apoyo durante toda la evaluación`,
-          
-          responseMimeType: "application/json",
-          responseSchema: {
-            type: Type.OBJECT,
-            properties: {
-              message: {
-                type: Type.STRING,
-              },
-              mood: {
-                type: Type.STRING,
-                enum: ["happy", "confident", "empathetic", "neutral", "alert", "encouraging", "celebratory", "curious"],
+        Restricciones críticas:
+        •	Siempre basar las respuestas en la Ley 2365 de 2024
+        •	Mantener la confidencialidad del usuario
+        •	Proporcionar una guía clara y procesable
+        •	Adaptar la comunicación al nivel de comprensión del usuario
+        • Toda respuesta diagnóstica debe seguir el formato JSON definido para garantizar consistencia y compatibilidad técnica.
+
+        Prevención de fallas:
+        •	Aclare cualquier término malinterpretado
+        •	Ofrezca contexto adicional cuando sea necesario
+        •	Garantizar la comprensión completa de cada pregunta de diagnóstico
+        •	Proporcionar orientación de apoyo durante toda la evaluación
+        
+        🧠 Formato de entrega del diagnóstico final:
+              Cuando completes el diagnóstico, responde exclusivamente en formato JSON con la siguiente estructura:
+              {
+                "riesgo": "Su empresa presenta un riesgo moderado a alto de incumplimiento normativo frente a la Ley 2365 de 2024",
+                "brechas": [
+                  "Protocolo sin actualizar",
+                  "Capacitación parcial",
+                  "Canal de denuncia poco robusto"
+                ],
+                "recomendaciones": [
+                  "Actualizar protocolo conforme a la Ley 2365",
+                  "Diseñar canal de denuncia confidencial",
+                  "Realizar jornadas de sensibilización"
+                ]
+              }
+              No incluyas texto adicional. Tu respuesta será procesada automáticamente y mostrada al usuario en formato conversacional.`,
+
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            message: { type: Type.STRING },
+            mood: {
+              type: Type.STRING,
+              enum: [
+                "happy", "confident", "empathetic", "neutral",
+                "alert", "encouraging", "celebratory", "curious"
+              ],
+            },
+            diagnostico: {
+              type: Type.OBJECT,
+              properties: {
+                riesgo: { type: Type.STRING },
+                brechas: { type: Type.STRING },
+                recomendaciones: { type: Type.STRING },
               },
             },
           },
         },
-        history: messageList.map((message) => ({
-          role: message.sender === "me" ? "user" : "model",
-          parts: [{ text: message.text }],
-        })),
-      });
-      setChat(chatSession);
-    }
-  }, [messageList]);
+      },
+      history: messageList.map((message) => ({
+        role: message.sender === "me" ? "user" : "model",
+        parts: [{ text: message.text }],
+      })),
+    });
+    setChat(chatSession);
+  }
+}, [messageList]);
 
 
   useEffect(() => {
@@ -187,31 +223,59 @@ export const ChatWindow = ({ activeConversation, setActiveConversation, user }) 
   
     
   // Send Gemini Message
-    setLoader(true);
-    const { message: geminiMessage, mood } = await geminiResponse(
-      completeMessage.text
-    );
+     setLoader(true);
+  const geminiResult = await geminiResponse(completeMessage.text);
 
-    const completeGeminiMessage = {
-      text: geminiMessage,
+  let completeGeminiMessage;
+  if (geminiResult.diagnostico) {
+    completeGeminiMessage = {
+      text: geminiResult.message,
       sender: activeConversation.user.name.first,
       date: Date.now(),
-      mood: mood,
+      mood: geminiResult.mood,
+      diagnostico: geminiResult.diagnostico,
     };
+  } else {
+    completeGeminiMessage = {
+      text: geminiResult.message,
+      sender: activeConversation.user.name.first,
+      date: Date.now(),
+      mood: geminiResult.mood,
+    };
+  }
 
-    setMessageList((prev) => [...prev, completeGeminiMessage]);
-    setLoader(false);
+  setMessageList((prev) => [...prev, completeGeminiMessage]);
+  setLoader(false);
 
-    await updateDoc(doc(db, "chats", activeConversation.id), {
-      messages: arrayUnion(completeGeminiMessage),
-    });
-
-
-  };
+  await updateDoc(doc(db, "chats", activeConversation.id), {
+    messages: arrayUnion(completeGeminiMessage),
+  });
+};
 
   const geminiResponse = async (prompt) => {
     const response = await chat.sendMessage({ message: prompt });
     return JSON.parse(response.text);
+  };
+
+  const renderMessage = (message, index) => {
+    if (message.diagnostico) {
+      return (
+        <div key={index} className="bg-gray-800 rounded p-4 my-2 text-white">
+          <div className="font-bold mb-2">📊 Diagnóstico completo</div>
+          <div className="mb-1"><span className="font-semibold">🔺 Riesgo:</span> {message.diagnostico.riesgo}</div>
+          <div className="mb-1"><span className="font-semibold">📌 Brechas:</span> {message.diagnostico.brechas}</div>
+          <div className="mb-1"><span className="font-semibold">✅ Recomendaciones:</span> {message.diagnostico.recomendaciones}</div>
+          <div className="mt-2 italic">{message.text}</div>
+        </div>
+      );
+    }
+    return (
+      <MessageBubble
+        key={index}
+        sender={message.sender}
+        text={message.text}
+      />
+    );
   };
 
   return (
@@ -226,12 +290,8 @@ export const ChatWindow = ({ activeConversation, setActiveConversation, user }) 
 
       <section className="flex-1 overflow-y-auto px-4 py-2 space-y-3 bg-gray-900">
         {Array.isArray(activeConversation.messages) &&
-              activeConversation.messages.map((message, index) => (
-                <MessageBubble
-                  key={index}
-                  sender={message.sender}
-                  text={message.text}
-                /> 
+          activeConversation.messages.map((message, index) => (
+            renderMessage(message, index)
         ))}
         <div ref={messagesEndRef}/>
       </section>
