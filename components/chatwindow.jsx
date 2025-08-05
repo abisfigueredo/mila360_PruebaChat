@@ -262,10 +262,10 @@ useEffect(() => {
       return (
         <div key={index} className="bg-gray-800 rounded p-4 my-2 text-white">
           <div className="font-bold mb-2">📊 Diagnóstico completo</div>
-          <div className="mb-1"><span className="font-semibold">🔺 Riesgo:</span> {message.diagnostico.riesgo}</div>
-          <div className="mb-1"><span className="font-semibold">📌 Brechas:</span> {message.diagnostico.brechas}</div>
-          <div className="mb-1"><span className="font-semibold">✅ Recomendaciones:</span> {message.diagnostico.recomendaciones}</div>
-          <div className="mt-2 italic">{message.text}</div>
+          <div className="mb-1 space-y-4"><span className="font-semibold">🔺 Riesgo:</span> {message.diagnostico.riesgo}</div>
+          <div className="mb-1 space-y-4"><span className="font-semibold">📌 Brechas:</span> {message.diagnostico.brechas}</div>
+          <div className="mb-1 space-y-4"><span className="font-semibold">✅ Recomendaciones:</span> {message.diagnostico.recomendaciones}</div>
+          <div className="mt-2 space-y-4 italic">{message.text}</div>
         </div>
       );
     }
