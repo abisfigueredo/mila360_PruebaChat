@@ -29,3 +29,11 @@
 .aurora-loop {
   animation: pulseGlow 4.5s ease-in-out infinite;
 }
+
+.border-gradient-user {
+  border-image: linear-gradient(90deg, #4ca1af, #2c3e50) 1;
+}
+
+.border-gradient-system {
+  border-image: linear-gradient(90deg, #6dd5ed, #f4d03f) 1;
+}

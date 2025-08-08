@@ -5,6 +5,7 @@ import { updateDoc, doc, arrayUnion } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db } from '@/firebaseConfig';
 import { MessageBubble } from './messagebubble';
+import { DiagnosisCard } from './diagnosiscard';
 
 const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_KEY });
 
@@ -70,19 +71,24 @@ useEffect(() => {
         Guión de interacción final:
           Al recibir todas las respuestas, responde de la siguiente manera:
           Gracias, ${activeConversation.user.name.first}. ¡Tu diagnóstico está listo!! Aquí tienes un resumen de los resultados:
+          
           Riesgo:
           Escribe aquí el riesgo que detectaste según las respuestas recibidas, por ejemplo:
-          MEDIO-ALTO, hay acciones en curso, pero aún existen brechas importantes.
-          📌 Brechas detectadas:
+          Moderado. Aunque la empresa ha tomado algunas medidas para prevenir el acoso sexual laboral, persisten vacíos que podrían comprometer la efectividad de su política interna y su cumplimiento con la Ley 2365 de 2024.
+          
+          Brechas:
           Escribe aquí las brechas que detectaste, por ejemplo:
-          •	Protocolo sin actualizar y con baja difusión
-          •	Capacitación parcial
-          •	Canal de denuncia poco robusto
-          📋 Recomendaciones:
+          •	La empresa cuenta con un protocolo, pero no ha sido actualizado conforme a los lineamientos específicos de la Ley 2365 de 2024, lo que puede generar inconsistencias en su aplicación.
+          •	Los canales de denuncia existen, pero no se garantiza plenamente su confidencialidad ni su accesibilidad para todos los empleados.
+          •	La capacitación sobre acoso sexual laboral no se ha realizado en el último año, lo que limita la sensibilización y el conocimiento del personal frente al tema.
+          • No se ha evidenciado un respaldo público por parte de la alta dirección, lo cual es clave para consolidar una cultura organizacional de cero tolerancias.
+          
+          Recomendaciones:
           Escribe aquí las recomendaciones que debe seguir la empresa, por ejemplo:
-          •	Actualiza tu protocolo alineado con la Ley 2365
-          •	Crea un canal confidencial con opciones más accesibles
-          •	Realiza una jornada de capacitación diferenciada por rol
+          •	Revisar y actualizar el protocolo institucional de prevención y atención del acoso sexual laboral, asegurando que cumpla con cada uno de los requisitos establecidos en la Ley 2365 de 2024.
+          •	Fortalecer los canales de denuncia, garantizando que sean confidenciales, accesibles y conocidos por todo el personal, incluyendo mecanismos digitales y físicos.
+          •	Implementar un programa de capacitación anual obligatorio para todos los niveles de la organización, con contenidos claros sobre prevención, denuncia y acompañamiento.
+          • Solicitar a la alta dirección una declaración pública de respaldo a la política de cero tolerancias, difundida a través de medios internos y externos como parte del compromiso institucional.
 
 
         Restricciones críticas:
@@ -90,30 +96,12 @@ useEffect(() => {
         •	Mantener la confidencialidad del usuario
         •	Proporcionar una guía clara y procesable
         •	Adaptar la comunicación al nivel de comprensión del usuario
-        • Toda respuesta diagnóstica debe seguir el formato JSON definido para garantizar consistencia y compatibilidad técnica.
 
         Prevención de fallas:
         •	Aclare cualquier término malinterpretado
         •	Ofrezca contexto adicional cuando sea necesario
         •	Garantizar la comprensión completa de cada pregunta de diagnóstico
-        •	Proporcionar orientación de apoyo durante toda la evaluación
-        
-        🧠 Formato de entrega del diagnóstico final:
-              Cuando completes el diagnóstico, responde exclusivamente en formato JSON con la siguiente estructura:
-              {
-                "riesgo": "Su empresa presenta un riesgo moderado a alto de incumplimiento normativo frente a la Ley 2365 de 2024",
-                "brechas": [
-                  "Protocolo sin actualizar",
-                  "Capacitación parcial",
-                  "Canal de denuncia poco robusto"
-                ],
-                "recomendaciones": [
-                  "Actualizar protocolo conforme a la Ley 2365",
-                  "Diseñar canal de denuncia confidencial",
-                  "Realizar jornadas de sensibilización"
-                ]
-              }
-              No incluyas texto adicional. Tu respuesta será procesada automáticamente y mostrada al usuario en formato conversacional.`,
+        •	Proporcionar orientación de apoyo durante toda la evaluación`,
 
         responseMimeType: "application/json",
         responseSchema: {
@@ -122,12 +110,9 @@ useEffect(() => {
             message: { type: Type.STRING },
             mood: {
               type: Type.STRING,
-              enum: [
-                "happy", "confident", "empathetic", "neutral",
-                "alert", "encouraging", "celebratory", "curious"
-              ],
+              enum: ["happy","empathetic","alert", "encouraging", "celebratory", "supportive", "professional"],
             },
-            diagnostico: {
+            diagnosis: {
               type: Type.OBJECT,
               properties: {
                 riesgo: { type: Type.STRING },
@@ -151,8 +136,7 @@ useEffect(() => {
   useEffect(() => {
    const scrollToBottom = () =>{
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth"});
-   };
-   console.log(messageList);   
+   };   
    scrollToBottom();
 
    // Actualiza los mensajes para que se vean en tiempo real
@@ -176,35 +160,7 @@ useEffect(() => {
   }
 
 
-  const sendMessage = async () => {
-
-    /* Uso de Storage de Firebase
-    if (file) {
-       
-        const storageRef = ref(storage, `images/${file.name}`);
-        await uploadBytes(storageRef, file);
-        const downloadUrl = await getDownloadURL(storageRef);
-
-        setInputMessage("");
-        setFile(null);     
-
-      
-      const completeMessage = {
-        text: inputMessage,
-        sender: "me",
-        date: Date.now(),
-        /*imageUrl: donwloadUrl, Mostrar imagen descargada desde Firebase 
-      };
-
-      setMessageList((prev) => [...prev, completeMessage]);
-
-      await updateDoc(doc(db, "chats", activeConversation.id),{
-        messages: arrayUnion(completeMessage),
-      });
-      return;
-    }*/
-    
-  
+  const sendMessage = async () => {  
   
     if (!inputMessage) return; // evita enviar mensajes vacíos
 
@@ -222,35 +178,48 @@ useEffect(() => {
     });
   
     
-  // Send Gemini Message
-     setLoader(true);
-  const geminiResult = await geminiResponse(completeMessage.text);
+    // Send Gemini Message
+    setLoader(true);
 
-  let completeGeminiMessage;
-  if (geminiResult.diagnostico) {
-    completeGeminiMessage = {
-      text: geminiResult.message,
-      sender: activeConversation.user.name.first,
-      date: Date.now(),
-      mood: geminiResult.mood,
-      diagnostico: geminiResult.diagnostico,
-    };
-  } else {
-    completeGeminiMessage = {
-      text: geminiResult.message,
-      sender: activeConversation.user.name.first,
-      date: Date.now(),
-      mood: geminiResult.mood,
-    };
-  }
+    const geminiResult = await geminiResponse(completeMessage.text);
 
-  setMessageList((prev) => [...prev, completeGeminiMessage]);
-  setLoader(false);
+    console.log("Respuesta completa de Gemini:", geminiResult);
+    console.log("Diagnóstico recibido:", geminiResult.diagnosis);
 
-  await updateDoc(doc(db, "chats", activeConversation.id), {
-    messages: arrayUnion(completeGeminiMessage),
-  });
-};
+    // Normalizar el mensaje
+    const rawMessage = Array.isArray(geminiResult.message)
+      ? geminiResult.message.join(" ")
+      : geminiResult.message;
+
+    // Construir el mensaje completo
+    let completeGeminiMessage;
+
+    if (geminiResult.diagnosis) {
+      completeGeminiMessage = {
+        text: rawMessage,
+        sender: activeConversation.user.name.first,
+        date: Date.now(),
+        mood: geminiResult.mood,
+        diagnosis: geminiResult.diagnosis,
+      };
+    } else {
+      completeGeminiMessage = {
+        text: rawMessage,
+        sender: activeConversation.user.name.first,
+        date: Date.now(),
+        mood: geminiResult.mood,
+      };
+    }
+
+    // Actualizar estado y Firestore
+    setMessageList((prev) => [...prev, completeGeminiMessage]);
+    setLoader(false);
+
+    await updateDoc(doc(db, "chats", activeConversation.id), {
+      messages: arrayUnion(completeGeminiMessage),
+    });
+
+  };
 
   const geminiResponse = async (prompt) => {
     const response = await chat.sendMessage({ message: prompt });
@@ -258,16 +227,26 @@ useEffect(() => {
   };
 
   const renderMessage = (message, index) => {
-    if (message.diagnostico) {
+    if (message.diagnosis) {
+      /*const { riesgo, brechas, recomendaciones } = message.diagnosis;
       return (
-        <div key={index} className="bg-gray-800 rounded p-4 my-2 text-white">
-          <div className="font-bold mb-2">📊 Diagnóstico completo</div>
-          <div className="mb-1 space-y-4"><span className="font-semibold">🔺 Riesgo:</span> {message.diagnostico.riesgo}</div>
-          <div className="mb-1 space-y-4"><span className="font-semibold">📌 Brechas:</span> {message.diagnostico.brechas}</div>
-          <div className="mb-1 space-y-4"><span className="font-semibold">✅ Recomendaciones:</span> {message.diagnostico.recomendaciones}</div>
-          <div className="mt-2 space-y-4 italic">{message.text}</div>
-        </div>
-      );
+        <MessageBubble
+          key={index}
+          sender={message.sender}
+          text={
+            `📊 *Diagnóstico completo*\n\n` +
+            `🔺 *Riesgo:* ${riesgo}\n` +
+            `📌 *Brechas:* ${brechas}\n` +
+            `✅ *Recomendaciones:* ${recomendaciones}`
+          }
+        />
+      );*/
+      return (
+      <DiagnosisCard 
+        key={index} 
+        diagnosis={message.diagnosis} 
+      />
+    );
     }
     return (
       <MessageBubble

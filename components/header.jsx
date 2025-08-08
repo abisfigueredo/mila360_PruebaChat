@@ -5,7 +5,6 @@ import Link from "next/link";
 import { auth } from "@/firebaseConfig";
 import { useRouter } from "next/navigation";
 import { signInWithPopup, GoogleAuthProvider, signOut} from "firebase/auth";
-import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 
 export const Header = () => {
